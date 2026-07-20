@@ -8,21 +8,24 @@
   <style>
     body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; background:#f5f5f5; margin:0; padding:16px; }
     .container { max-width:900px; margin:auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-    h1 { text-align:center; margin-bottom:20px; }
-    fieldset.question { margin-bottom:20px; padding:12px; border:1px solid #ddd; border-radius:8px; background:#fafafa; }
     
+    /* 頂部標題樣式優化 */
+    .hospital-title { text-align:center; font-size: 1.35rem; color: #555; margin-bottom: 6px; font-weight: 500; }
+    .main-title { text-align:center; margin-top: 0; margin-bottom: 20px; font-size: 1.85rem; color: #111; }
+    
+    fieldset.question { margin-bottom:20px; padding:12px; border:1px solid #ddd; border-radius:8px; background:#fafafa; }
     legend.question-title { font-weight:bold; margin-bottom:8px; padding:0 6px; float:none; width:auto; }
     
     .options { display:flex; flex-direction:column; gap:6px; clear:both; padding-top:4px; }
     .option { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; background:#fff; border:1px solid #ccc; cursor:pointer; font-size:0.95rem; transition: background 0.2s, border-color 0.2s; }
     .option input { cursor:pointer; }
     
-    /* 新增：懸停與選取時的視覺回饋 */
+    /* 懸停與選取時的視覺回饋 */
     .option:hover { background: #f0f7ff; border-color: #1976d2; }
     .option input:focus-visible { outline: 2px solid #1976d2; }
     
-    /* 新增：清除按鈕樣式 */
-    .clear-btn { align-self: flex-start; margin-top: 8px; padding: 6px 12px; font-size: 0.85rem; background: #e0e0e0; color: #333; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+    /* 清除按鈕樣式 */
+    .clear-btn { align-self: flex-start; margin-top: 4px; padding: 6px 12px; font-size: 0.85rem; background: #e0e0e0; color: #333; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
     .clear-btn:hover { background: #d5d5d5; }
 
     button.calc-btn { margin-top:20px; padding:12px 20px; border:none; border-radius:6px; background:#1976d2; color:white; font-size:1rem; cursor:pointer; width: 100%; max-width: 200px; display: block; margin-left: auto; margin-right: auto; }
@@ -41,7 +44,10 @@
 <body>
 
 <div class="container">
-  <h1>Northwick Park 頸痛問卷（NPQ）</h1>
+  <!-- 修正後的頂部雙大標題 -->
+  <div class="hospital-title">東區尤德夫人那打素醫院 物理治療部</div>
+  <h1 class="main-title">Northwick Park 頸痛問卷（NPQ）</h1>
+  
   <p>請根據你今日的情況，在每一題中選擇最貼切的描述。<strong>（若平時不駕駛，第9題可留空）</strong></p>
   <div id="questions"></div>
   <button type="button" class="calc-btn" onclick="calculateNPQ()">計算分數</button>
@@ -67,7 +73,7 @@
 
 <script>
 const questions = [
-  { title: "1. 現在頸痛的程度", options: ["沒有頸痛", "溫和", "中等", "很厲害", "簡直不可想像"] },
+  { title: "1. 現在頸痛的程度", options: ["沒有頸痛", "溫和", "中等", "很厲害", "簡真不可想像"] },
   { title: "2. 頸痛與睡眠", options: ["頸痛從不干擾我睡眠", "頸痛有時會干擾我睡眠", "頸痛經常干擾我睡眠", "頸痛使我每晚睡眠少於五小時", "頸痛使我每晚睡眠少於二小時"] },
   { title: "3. 手臂在夜晚感到發麻或針刺", options: ["夜晚沒有麻痺或針刺感", "偶爾有麻痺或針刺感", "經常干擾睡眠", "使我每晚睡眠少於五小時", "使我每晚睡眠少於二小時"] },
   { title: "4. 每天症狀持續的時間", options: ["整天都正常", "起床後不適少於一小時", "不適持續 1–4 小時", "不適持續超過 4 小時", "整天持續不適"] },
@@ -117,7 +123,7 @@ questions.forEach((q, index) => {
     optionsDiv.appendChild(label);
   });
 
-  // 新增：如果題目是可選的（如駕駛），加上一個清除選取的按鈕
+  // 如果題目是可選的（如駕駛），自動加上「清除此題」按鈕
   if (q.optional) {
     const clearButton = document.createElement("button");
     clearButton.type = "button";
@@ -151,7 +157,7 @@ function calculateNPQ() {
         continue; 
       } else {
         warning.textContent = `請填寫第 ${i} 題後再進行計算。`;
-        // 自動滾動到未填寫的題目，提升使用者體驗
+        // 自動聚焦至漏填的題目上
         document.querySelector(`input[name="q${i}"]`).focus();
         return;
       }

@@ -3,7 +3,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <div class="hospital-header">東區尤德夫人那打素醫院 物理治療部</div>
+  <title>東區尤德夫人那打素醫院 物理治療部</title>
   <h1>Northwick Park 頸痛問卷（NPQ）</h1>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>

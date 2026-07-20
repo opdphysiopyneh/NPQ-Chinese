@@ -3,8 +3,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>東區尤德夫人那打素醫院 物理治療部</title>
-  <h1>Northwick Park 頸痛問卷（NPQ）</h1>
+  <title>東區尤德夫人那打素醫院 物理治療部 - Northwick Park 頸痛問卷（NPQ）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; background:#f5f5f5; margin:0; padding:16px; }

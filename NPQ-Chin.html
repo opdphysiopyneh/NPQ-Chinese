@@ -9,7 +9,10 @@
     .container { max-width:900px; margin:auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
     h1 { text-align:center; margin-bottom:20px; }
     fieldset.question { margin-bottom:20px; padding:12px; border:1px solid #ddd; border-radius:8px; background:#fafafa; }
-    legend.question-title { font-weight:bold; margin-bottom:8px; padding:0 6px; float:left; width:100%; }
+    
+    /* 修正關鍵：解決部分瀏覽器下 legend 導致的排版崩壞與無法顯示問題 */
+    legend.question-title { font-weight:bold; margin-bottom:8px; padding:0 6px; float:none; width:auto; }
+    
     .options { display:flex; flex-direction:column; gap:6px; clear:both; padding-top:4px; }
     .option { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; background:#fff; border:1px solid #ccc; cursor:pointer; font-size:0.95rem; }
     .option input { cursor:pointer; }
@@ -22,7 +25,10 @@
     .close-btn { margin-top:15px; padding:10px 16px; background:#555; color:white; border:none; border-radius:6px; cursor:pointer; }
     .close-btn:hover { background:#333; }
     .warning { color:#c62828; margin-top:10px; font-size:0.9rem; font-weight: bold; }
-    .hint { font-size:0.85rem; color:#666; margin-top: 2px; }
+    .hint { font-size:0.85rem; color:#666; margin-top: 2px; margin-bottom: 8px; }
+    
+    /* 補上變更提示框的 CSS 樣式，確保彈出視窗文字能美觀呈現 */
+    .notice-box { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 12px; margin-top: 15px; text-align: left; font-size: 0.95rem; color: #0d47a1; border-radius: 4px; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -32,7 +38,7 @@
   <p>請根據你今日的情況，在每一題中選擇最貼切的描述。<strong>（若平時不駕駛，第9題可留空）</strong></p>
   <div id="questions"></div>
   <button type="button" onclick="calculateNPQ()">計算分數</button>
-  <div id="warning" class="warning" dashed aria-live="assertive"></div>
+  <div id="warning" class="warning" aria-live="assertive"></div>
 </div>
 
 <div id="scoreModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
@@ -109,28 +115,25 @@ function calculateNPQ() {
   warning.textContent = "";
 
   let totalScore = 0;
-  let maxPossibleScore = 0; // Starts at 0
+  let maxPossibleScore = 0;
 
-for (let i = 1; i <= 9; i++) {
-  const selected = document.querySelector(`input[name="q${i}"]:checked`);
-  const isOptional = questions[i-1].optional;
-  
-  if (!selected) {
-    if (isOptional) {
-      // If Question 9 is blank, loop skips this step.
-      // maxPossibleScore stops at 32.
-      continue; 
-    } else {
-      warning.textContent = `請填寫第 ${i} 題後再進行計算。`;
-      return;
+  for (let i = 1; i <= 9; i++) {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const isOptional = questions[i-1].optional;
+    
+    if (!selected) {
+      if (isOptional) {
+        continue; 
+      } else {
+        warning.textContent = `請填寫第 ${i} 題後再進行計算。`;
+        return;
+      }
     }
+    
+    totalScore += parseInt(selected.value);
+    maxPossibleScore += 4; 
   }
-  
-  totalScore += parseInt(selected.value);
-  maxPossibleScore += 4; // Adds 4 points for each question answered. 
-}
 
-  // Calculate percentage: standard NPQ Disability Index calculation
   const percentage = Math.round((totalScore / maxPossibleScore) * 100);
 
   document.getElementById("rawScoreText").innerHTML = `原始總分：<strong>${totalScore}</strong> / ${maxPossibleScore}`;

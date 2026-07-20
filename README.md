@@ -55,7 +55,7 @@
     <h2 id="modalTitle">評估結果</h2>
     <p id="rawScoreText"></p>
     <p id="percentScoreText"></p>
-    <p style="font-size:0.9rem; color:#555;">頸痛失能指數越低越好（0% 代表無症狀，100% 代表最嚴重失能）</p>
+    <p style="font-size:0.9rem; color:#555;">頸痛失能指數越低越好<br>（0% 代表無症狀，100% 代表最嚴重失能）</p>
 
     <div class="notice-box">
       請不要離開此畫面，並出示給您的治療師。<br>

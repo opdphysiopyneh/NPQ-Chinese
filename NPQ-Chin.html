@@ -41,13 +41,19 @@
     <p id="rawScoreText"></p>
     <p id="percentScoreText"></p>
     <p style="font-size:0.9rem; color:#555;">頸痛失能指數越低越好（0% 代表無症狀，100% 代表最嚴重失能）</p>
+
+    <div class="notice-box">
+      請不要離開此畫面，並將此頁面出示給您的治療師。
+      您亦可以進行螢幕截圖，並將照片出示給您的治療師。謝謝。
+    </div>
+    
     <button type="button" class="close-btn" onclick="closeModal()">關閉</button>
   </div>
 </div>
 
 <script>
 const questions = [
-  { title: "1. 現在頸痛的程度", options: ["沒有頸痛", "溫和", "中等", "很厲害", "簡集不可想像"] },
+  { title: "1. 現在頸痛的程度", options: ["沒有頸痛", "溫和", "中等", "很厲害", "簡直不可想像"] },
   { title: "2. 頸痛與睡眠", options: ["頸痛從不干擾我睡眠", "頸痛有時會干擾我睡眠", "頸痛經常干擾我睡眠", "頸痛使我每晚睡眠少於五小時", "頸痛使我每晚睡眠少於二小時"] },
   { title: "3. 手臂在夜晚感到發麻或針刺", options: ["夜晚沒有麻痺或針刺感", "偶爾有麻痺或針刺感", "經常干擾睡眠", "使我每晚睡眠少於五小時", "使我每晚睡眠少於二小時"] },
   { title: "4. 每天症狀持續的時間", options: ["整天都正常", "起床後不適少於一小時", "不適持續 1–4 小時", "不適持續超過 4 小時", "整天持續不適"] },
@@ -73,7 +79,7 @@ questions.forEach((q, index) => {
   if (q.optional) {
     const hint = document.createElement("div");
     hint.className = "hint";
-    hint.textContent = "（若不開車，此題可不填）";
+    hint.textContent = "（若不駕駛，此題可不填）";
     fieldset.appendChild(hint);
   }
 
@@ -103,25 +109,26 @@ function calculateNPQ() {
   warning.textContent = "";
 
   let totalScore = 0;
-  let maxPossibleScore = 0;
+  let maxPossibleScore = 0; // Starts at 0
 
-  for (let i = 1; i <= 9; i++) {
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    const isOptional = questions[i-1].optional;
-    
-    if (!selected) {
-      if (isOptional) {
-        // Skip Question 9 from calculation entirely if omitted
-        continue;
-      } else {
-        warning.textContent = `請填寫第 ${i} 題後再進行計算。`;
-        return;
-      }
+for (let i = 1; i <= 9; i++) {
+  const selected = document.querySelector(`input[name="q${i}"]:checked`);
+  const isOptional = questions[i-1].optional;
+  
+  if (!selected) {
+    if (isOptional) {
+      // If Question 9 is blank, loop skips this step.
+      // maxPossibleScore stops at 32.
+      continue; 
+    } else {
+      warning.textContent = `請填寫第 ${i} 題後再進行計算。`;
+      return;
     }
-    
-    totalScore += parseInt(selected.value);
-    maxPossibleScore += 4; // Each answered question adds 4 points to max pool
   }
+  
+  totalScore += parseInt(selected.value);
+  maxPossibleScore += 4; // Adds 4 points for each question answered. 
+}
 
   // Calculate percentage: standard NPQ Disability Index calculation
   const percentage = Math.round((totalScore / maxPossibleScore) * 100);

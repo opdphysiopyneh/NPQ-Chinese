@@ -10,13 +10,13 @@
     h1 { text-align:center; margin-bottom:20px; }
     fieldset.question { margin-bottom:20px; padding:12px; border:1px solid #ddd; border-radius:8px; background:#fafafa; }
     
-    /* 修正關鍵：解決部分瀏覽器下 legend 導致的排版崩壞與無法顯示問題 */
+
     legend.question-title { font-weight:bold; margin-bottom:8px; padding:0 6px; float:none; width:auto; }
     
     .options { display:flex; flex-direction:column; gap:6px; clear:both; padding-top:4px; }
     .option { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; background:#fff; border:1px solid #ccc; cursor:pointer; font-size:0.95rem; }
     .option input { cursor:pointer; }
-    /* Visible focus styles for accessibility */
+
     .option input:focus-visible { outline: 2px solid #1976d2; }
     button { margin-top:20px; padding:12px 20px; border:none; border-radius:6px; background:#1976d2; color:white; font-size:1rem; cursor:pointer; }
     button:hover { background:#125a9c; }
@@ -27,7 +27,6 @@
     .warning { color:#c62828; margin-top:10px; font-size:0.9rem; font-weight: bold; }
     .hint { font-size:0.85rem; color:#666; margin-top: 2px; margin-bottom: 8px; }
     
-    /* 補上變更提示框的 CSS 樣式，確保彈出視窗文字能美觀呈現 */
     .notice-box { background: #fffde7; border-left: 4px solid #fbc02d; padding: 12px; margin-top: 15px; text-align: center; font-size: 1.15rem; color: #5d4037; border-radius: 4px; line-height: 1.5; }
   </style></head><body><div class="container">
 </head>

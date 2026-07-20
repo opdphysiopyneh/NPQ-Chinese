@@ -9,7 +9,6 @@
     body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; background:#f5f5f5; margin:0; padding:16px; }
     .container { max-width:900px; margin:auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
     
-    /* 頂部標題樣式優化 */
     .hospital-title { text-align:center; font-size: 1.35rem; color: #555; margin-bottom: 6px; font-weight: 500; }
     .main-title { text-align:center; margin-top: 0; margin-bottom: 20px; font-size: 1.85rem; color: #111; }
     
@@ -20,11 +19,9 @@
     .option { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; background:#fff; border:1px solid #ccc; cursor:pointer; font-size:0.95rem; transition: background 0.2s, border-color 0.2s; }
     .option input { cursor:pointer; }
     
-    /* 懸停與選取時的視覺回饋 */
     .option:hover { background: #f0f7ff; border-color: #1976d2; }
     .option input:focus-visible { outline: 2px solid #1976d2; }
     
-    /* 清除按鈕樣式 */
     .clear-btn { align-self: flex-start; margin-top: 4px; padding: 6px 12px; font-size: 0.85rem; background: #e0e0e0; color: #333; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
     .clear-btn:hover { background: #d5d5d5; }
 
@@ -44,9 +41,8 @@
 <body>
 
 <div class="container">
-  <!-- 修正後的頂部雙大標題 -->
-  <div class="hospital-title">東區尤德夫人那打素醫院 物理治療部</div>
-  <h1 class="main-title">Northwick Park 頸痛問卷（NPQ）</h1>
+  <div class="hospital-title" id="inner-h-title">東區尤德夫人那打素醫院 物理治療部</div>
+  <h1 class="main-title" id="inner-m-title">Northwick Park 頸痛問卷（NPQ）</h1>
   
   <p>請根據你今日的情況，在每一題中選擇最貼切的描述。<strong>（若平時不駕駛，第9題可留空）</strong></p>
   <div id="questions"></div>
@@ -62,8 +58,8 @@
     <p style="font-size:0.9rem; color:#555;">頸痛失能指數越低越好（0% 代表無症狀，100% 代表最嚴重失能）</p>
 
     <div class="notice-box">
-      請不要離開此畫面，並將此頁面出示給您的治療師。<br>
-      您亦可以進行螢幕截圖，並將照片出示給您的治療師。<br>
+      請不要離開此畫面，並出示給您的治療師。<br>
+      您亦可以進行螢幕截圖。<br>
       謝謝。
     </div>
     
@@ -72,6 +68,17 @@
 </div>
 
 <script>
+window.addEventListener('DOMContentLoaded', () => {
+  const headers = document.querySelectorAll('h1, h2, div');
+  headers.forEach(el => {
+    if (el.textContent.trim() === 'NPQ-Chinese') {
+      el.innerHTML = '<span style="font-size: 1.35rem; color: #555; font-weight: 500; display:block; text-align:center;">東區尤德夫人那打素醫院 物理治療部</span>';
+      const innerHTitle = document.getElementById('inner-h-title');
+      if (innerHTitle) innerHTitle.style.display = 'none';
+    }
+  });
+});
+
 const questions = [
   { title: "1. 現在頸痛的程度", options: ["沒有頸痛", "溫和", "中等", "很厲害", "簡真不可想像"] },
   { title: "2. 頸痛與睡眠", options: ["頸痛從不干擾我睡眠", "頸痛有時會干擾我睡眠", "頸痛經常干擾我睡眠", "頸痛使我每晚睡眠少於五小時", "頸痛使我每晚睡眠少於二小時"] },
@@ -123,7 +130,6 @@ questions.forEach((q, index) => {
     optionsDiv.appendChild(label);
   });
 
-  // 如果題目是可選的（如駕駛），自動加上「清除此題」按鈕
   if (q.optional) {
     const clearButton = document.createElement("button");
     clearButton.type = "button";
@@ -157,7 +163,6 @@ function calculateNPQ() {
         continue; 
       } else {
         warning.textContent = `請填寫第 ${i} 題後再進行計算。`;
-        // 自動聚焦至漏填的題目上
         document.querySelector(`input[name="q${i}"]`).focus();
         return;
       }

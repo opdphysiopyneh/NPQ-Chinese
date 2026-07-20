@@ -1,7 +1,6 @@
 # NPQ-Chinese
 NPQ Chinese Questionnaire
 
-<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">

@@ -1,6 +1,7 @@
 # NPQ-Chinese
 NPQ Chinese Questionnaire
 
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
@@ -12,24 +13,25 @@ NPQ Chinese Questionnaire
     h1 { text-align:center; margin-bottom:20px; }
     fieldset.question { margin-bottom:20px; padding:12px; border:1px solid #ddd; border-radius:8px; background:#fafafa; }
     
-   legend.question-title { font-weight:bold; margin-bottom:8px; padding:0 6px; float:none; width:auto; }
+    legend.question-title { font-weight:bold; margin-bottom:8px; padding:0 6px; float:none; width:auto; }
     
-  .options { display:flex; flex-direction:column; gap:6px; clear:both; padding-top:4px; }
-  .option { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; background:#fff; border:1px solid #ccc; cursor:pointer; font-size:0.95rem; }
-  .option input { cursor:pointer; }
+    .options { display:flex; flex-direction:column; gap:6px; clear:both; padding-top:4px; }
+    .option { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; background:#fff; border:1px solid #ccc; cursor:pointer; font-size:0.95rem; }
+    .option input { cursor:pointer; }
 
-  .option input:focus-visible { outline: 2px solid #1976d2; }
+    .option input:focus-visible { outline: 2px solid #1976d2; }
     button { margin-top:20px; padding:12px 20px; border:none; border-radius:6px; background:#1976d2; color:white; font-size:1rem; cursor:pointer; }
     button:hover { background:#125a9c; }
+    
     .modal { display:none; position:fixed; z-index:1000; inset:0; background:rgba(0,0,0,0.4); }
-    .modal-content { background:#fff; margin:15% auto; padding:20px; border-radius:10px; width:90%; max-width:420px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.3); }
+    .modal-content { background:#fff; margin:15% auto; padding:20px; border-radius:10px; width:90%; max-width:440px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.3); }
     .close-btn { margin-top:15px; padding:10px 16px; background:#555; color:white; border:none; border-radius:6px; cursor:pointer; }
     .close-btn:hover { background:#333; }
     .warning { color:#c62828; margin-top:10px; font-size:0.9rem; font-weight: bold; }
     .hint { font-size:0.85rem; color:#666; margin-top: 2px; margin-bottom: 8px; }
     
-  .notice-box { background: #fffde7; border-left: 4px solid #fbc02d; padding: 12px; margin-top: 15px; text-align: center; font-size: 1.15rem; color: #5d4037; border-radius: 4px; line-height: 1.5; }
-  </style></head><body><div class="container">
+    .notice-box { background: #fffde7; border-left: 4px solid #fbc02d; border-right: 4px solid #fbc02d; padding: 16px 12px; margin-top: 15px; text-align: center; font-size: 1.15rem; color: #5d4037; border-radius: 4px; line-height: 1.6; font-weight: bold; }
+  </style>
 </head>
 <body>
 
@@ -48,13 +50,13 @@ NPQ Chinese Questionnaire
     <p id="percentScoreText"></p>
     <p style="font-size:0.9rem; color:#555;">頸痛失能指數越低越好（0% 代表無症狀，100% 代表最嚴重失能）</p>
 
-  <div class="notice-box">
-      請不要離開此畫面，並將此頁面出示給您的治療師。
-      您亦可以進行螢幕截圖，並將照片出示給您的治療師。
+    <div class="notice-box">
+      請不要離開此畫面，並將此頁面出示給您的治療師。<br>
+      您亦可以進行螢幕截圖，並將照片出示給您的治療師。<br>
       謝謝。
     </div>
     
-  <button type="button" class="close-btn" onclick="closeModal()">關閉</button>
+    <button type="button" class="close-btn" onclick="closeModal()">關閉</button>
   </div>
 </div>
 
@@ -153,3 +155,4 @@ function closeModal() {
 </script>
 
 </body>
+</html>

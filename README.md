@@ -3,7 +3,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title> 東區尤德夫人那打素醫院 物理治療部 - Northwick Park 頸痛問卷（NPQ)</title>
+  <title>東區尤德夫人那打素醫院 物理治療部 - Northwick Park 頸痛問卷（NPQ)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; background:#f5f5f5; margin:0; padding:16px; }
@@ -14,18 +14,25 @@
     legend.question-title { font-weight:bold; margin-bottom:8px; padding:0 6px; float:none; width:auto; }
     
     .options { display:flex; flex-direction:column; gap:6px; clear:both; padding-top:4px; }
-    .option { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; background:#fff; border:1px solid #ccc; cursor:pointer; font-size:0.95rem; }
+    .option { display:flex; align-items:center; gap:8px; padding:8px 12px; border-radius:6px; background:#fff; border:1px solid #ccc; cursor:pointer; font-size:0.95rem; transition: background 0.2s, border-color 0.2s; }
     .option input { cursor:pointer; }
-
+    
+    /* 新增：懸停與選取時的視覺回饋 */
+    .option:hover { background: #f0f7ff; border-color: #1976d2; }
     .option input:focus-visible { outline: 2px solid #1976d2; }
-    button { margin-top:20px; padding:12px 20px; border:none; border-radius:6px; background:#1976d2; color:white; font-size:1rem; cursor:pointer; }
-    button:hover { background:#125a9c; }
+    
+    /* 新增：清除按鈕樣式 */
+    .clear-btn { align-self: flex-start; margin-top: 8px; padding: 6px 12px; font-size: 0.85rem; background: #e0e0e0; color: #333; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+    .clear-btn:hover { background: #d5d5d5; }
+
+    button.calc-btn { margin-top:20px; padding:12px 20px; border:none; border-radius:6px; background:#1976d2; color:white; font-size:1rem; cursor:pointer; width: 100%; max-width: 200px; display: block; margin-left: auto; margin-right: auto; }
+    button.calc-btn:hover { background:#125a9c; }
     
     .modal { display:none; position:fixed; z-index:1000; inset:0; background:rgba(0,0,0,0.4); }
     .modal-content { background:#fff; margin:15% auto; padding:20px; border-radius:10px; width:90%; max-width:440px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.3); }
     .close-btn { margin-top:15px; padding:10px 16px; background:#555; color:white; border:none; border-radius:6px; cursor:pointer; }
     .close-btn:hover { background:#333; }
-    .warning { color:#c62828; margin-top:10px; font-size:0.9rem; font-weight: bold; }
+    .warning { color:#c62828; margin-top:15px; font-size:1rem; font-weight: bold; text-align: center; }
     .hint { font-size:0.85rem; color:#666; margin-top: 2px; margin-bottom: 8px; }
     
     .notice-box { background: #fffde7; border-left: 4px solid #fbc02d; border-right: 4px solid #fbc02d; padding: 16px 12px; margin-top: 15px; text-align: center; font-size: 1.15rem; color: #5d4037; border-radius: 4px; line-height: 1.6; font-weight: bold; }
@@ -37,7 +44,7 @@
   <h1>Northwick Park 頸痛問卷（NPQ）</h1>
   <p>請根據你今日的情況，在每一題中選擇最貼切的描述。<strong>（若平時不駕駛，第9題可留空）</strong></p>
   <div id="questions"></div>
-  <button type="button" onclick="calculateNPQ()">計算分數</button>
+  <button type="button" class="calc-btn" onclick="calculateNPQ()">計算分數</button>
   <div id="warning" class="warning" aria-live="assertive"></div>
 </div>
 
@@ -77,6 +84,9 @@ questions.forEach((q, index) => {
   const qNum = index + 1;
   const fieldset = document.createElement("fieldset");
   fieldset.className = "question";
+  if (q.optional) {
+    fieldset.id = `optional-fieldset-${qNum}`;
+  }
 
   const legend = document.createElement("legend");
   legend.className = "question-title";
@@ -107,6 +117,20 @@ questions.forEach((q, index) => {
     optionsDiv.appendChild(label);
   });
 
+  // 新增：如果題目是可選的（如駕駛），加上一個清除選取的按鈕
+  if (q.optional) {
+    const clearButton = document.createElement("button");
+    clearButton.type = "button";
+    clearButton.className = "clear-btn";
+    clearButton.textContent = "清除此題（我不駕駛）";
+    clearButton.setAttribute("aria-controls", `optional-fieldset-${qNum}`);
+    clearButton.onclick = function() {
+      const radios = document.querySelectorAll(`input[name="q${qNum}"]`);
+      radios.forEach(radio => radio.checked = false);
+    };
+    optionsDiv.appendChild(clearButton);
+  }
+
   fieldset.appendChild(optionsDiv);
   questionsDiv.appendChild(fieldset);
 });
@@ -127,6 +151,8 @@ function calculateNPQ() {
         continue; 
       } else {
         warning.textContent = `請填寫第 ${i} 題後再進行計算。`;
+        // 自動滾動到未填寫的題目，提升使用者體驗
+        document.querySelector(`input[name="q${i}"]`).focus();
         return;
       }
     }
